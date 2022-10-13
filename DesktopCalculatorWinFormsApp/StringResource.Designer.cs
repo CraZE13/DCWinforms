@@ -164,7 +164,7 @@ namespace DesktopCalculatorWinFormsApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit | Exit | Help.
+        ///   Looks up a localized string similar to Edit | Exit | Help | Theme.
         /// </summary>
         internal static string menuItems {
             get {
@@ -178,6 +178,15 @@ namespace DesktopCalculatorWinFormsApp {
         internal static string Operators {
             get {
                 return ResourceManager.GetString("Operators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to White | LightGray | RosyBrown | MistyRose | LightSalmon | SandyBrown | PeachPuff | Bisque | AntiqueWhite | DarkKhaki | PaleGoldenrod | Turquoise | LightGreen | PowderBlue | AliceBlue | SlateGray | Lavender | Thistle | Pink.
+        /// </summary>
+        internal static string themeSubItems {
+            get {
+                return ResourceManager.GetString("themeSubItems", resourceCulture);
             }
         }
     }
