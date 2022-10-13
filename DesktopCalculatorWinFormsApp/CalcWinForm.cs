@@ -17,6 +17,7 @@ namespace DesktopCalculatorWinFormsApp
         double? operator1 = null;
         string operation = null;
         bool operationPerformed = false;
+        private Color _buttonBackColor = Color.White, _buttonForeColor = Color.Black;
 
         C1MainMenu mainMenu;
         C1Label operationStack;
@@ -68,10 +69,10 @@ namespace DesktopCalculatorWinFormsApp
         // Adjust size of diffrent controls when form resizes
         private void CalcWinForm_SizeChanged(object sender, EventArgs e)
         {
-            int btnF = 12, resF = 28, lblF = 13, dist = 75; 
+            int btnF = 12, resF = 28, lblF = 13, dist = 75;
             bool isSmaller = (Size.Width < 280 || Size.Height < 400 && Size.Width >= MinimumSize.Width);
             bool isLarger = (Size.Width > 800 || Size.Height > 600);
-            
+
             if (isSmaller || isLarger) // if the control size has become smaller or larger than the preferred size set sizes accordingly
             {
                 btnF = isSmaller ? 9 : 18;
@@ -83,7 +84,7 @@ namespace DesktopCalculatorWinFormsApp
             // Set font size for different control according to the client size
             foreach (Button btn in tableLayoutPanel.Controls)
                 btn.Font = new Font(StringResource.FontName, btnF);
-                splitContainer.SplitterDistance = dist;
+            splitContainer.SplitterDistance = dist;
             resultBox.Font = new Font(StringResource.FontName, resF);
             operationStack.Font = new Font(StringResource.FontName, lblF);
         }
@@ -128,6 +129,8 @@ namespace DesktopCalculatorWinFormsApp
                 Text = StringResource.DefaultResult,
                 ReadOnly = true,
                 TabStop = false,
+                BackColor = Color.FromArgb(_buttonBackColor.A, (int)(_buttonBackColor.R * 0.92), (int)(_buttonBackColor.G * 0.92), (int)(_buttonBackColor.B * 0.92)),
+                ForeColor = _buttonForeColor,
                 BorderStyle = BorderStyle.None,
                 TextAlign = HorizontalAlignment.Right,
                 Anchor = AnchorStyles.Right,
@@ -146,6 +149,9 @@ namespace DesktopCalculatorWinFormsApp
                 C1CommandMenu newMenuItem = CreateMenuItem(menuItem);
                 if (menuItem.Equals("Edit"))
                     foreach (string subItem in StringResource.editSubItems.Split(" | "))
+                        newMenuItem.CommandLinks.Add(new C1CommandLink(CreateMenuItem(subItem)));
+                else if (menuItem.Equals("Theme"))
+                    foreach (string subItem in StringResource.themeSubItems.Split(" | "))
                         newMenuItem.CommandLinks.Add(new C1CommandLink(CreateMenuItem(subItem)));
                 mainMenu.CommandLinks.Add(new C1CommandLink(newMenuItem));
             }
@@ -172,12 +178,12 @@ namespace DesktopCalculatorWinFormsApp
             };
 
             tableLayoutPanel.RowStyles.Add(new(SizeType.Percent, 9.09F));
-            
+
             for (int row = 1; row < 7; row++)
-                tableLayoutPanel.RowStyles.Add(new (SizeType.Percent, 15.15F));
+                tableLayoutPanel.RowStyles.Add(new(SizeType.Percent, 15.15F));
 
             for (int col = 0; col < 5; col++)
-                tableLayoutPanel.ColumnStyles.Add(new (SizeType.Percent, 20F));
+                tableLayoutPanel.ColumnStyles.Add(new(SizeType.Percent, 20F));
 
             splitContainer.Panel2.Controls.Add(tableLayoutPanel);
         }
@@ -215,6 +221,7 @@ namespace DesktopCalculatorWinFormsApp
             btn.Size = new(70, prevTop == 0 ? 30 : 50);
             btn.Location = new(prevLeft, prevTop);
             btn.BackColor = int.TryParse(btn.Name[3..], out int temp) ? Color.Silver : Color.White;
+            btn.ForeColor = _buttonForeColor;
             btn.MouseClick += Btn_Click;
             toolTip.SetToolTip(btn, toolTips.GetString(btn.Name));
         }
@@ -288,7 +295,21 @@ namespace DesktopCalculatorWinFormsApp
                 case "Paste": resultBox.Value = resultBox.Text.Equals(StringResource.DefaultResult) ? Clipboard.GetText() : resultBox.Text + Clipboard.GetText(); break;
                 case "Exit": Close(); break;
                 case "Help": MessageBox.Show(StringResource.HelpContent, StringResource.HelpTitle); break;
-                default: break;
+                default: ChangeTheme(Color.FromName(menuItem.Name)); break;
+            }
+        }
+
+        // To update calculator color theme.
+        public void ChangeTheme(Color color)
+        {
+            if (color.Name != "Theme")
+            {
+                foreach (Button btn in tableLayoutPanel.Controls)
+                    if (!int.TryParse(btn.Name[3..], out int temp))
+                        btn.BackColor = color;
+                    else
+                        btn.BackColor = Color.FromArgb(color.A, (int)(color.R * 0.77), (int)(color.G * 0.77), (int)(color.B * 0.77));
+                BackColor = resultBox.BackColor = Color.FromArgb(color.A, (int)(color.R * 0.92), (int)(color.G * 0.92), (int)(color.B * 0.92));
             }
         }
 

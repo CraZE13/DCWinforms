@@ -186,11 +186,14 @@
     <comment>Memory options for calculated results</comment>
   </data>
   <data name="menuItems" xml:space="preserve">
-    <value>Edit | Exit | Help</value>
+    <value>Edit | Exit | Help | Theme</value>
     <comment>List of menu items</comment>
   </data>
   <data name="Operators" xml:space="preserve">
     <value>MR | M+ | M- | MS | MC | + | - | CE | C | Del | % | ^ | 1/x | * | / | 7 | 8 | 9 | Log | Exp | 4 | 5 | 6 | Sin | Cos | 1 | 2 | 3 | Tan | Sqrt | +/- | 0 | . | Ans | =</value>
     <comment>Symbols of operators</comment>
+  </data>
+  <data name="themeSubItems" xml:space="preserve">
+    <value>White | LightGray | RosyBrown | MistyRose | LightSalmon | SandyBrown | PeachPuff | Bisque | AntiqueWhite | DarkKhaki | PaleGoldenrod | Turquoise | LightGreen | PowderBlue | AliceBlue | SlateGray | Lavender | Thistle | Pink</value>
   </data>
 </root>
